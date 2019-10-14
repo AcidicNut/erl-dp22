@@ -54,8 +54,30 @@ Catch Ez egy FOSUDOKU, szarok a szabalyok
 Szabalyok
 	- k cellameret eseten
 		- az ertekeknek [1, k*k] intervallumban kell lennie
-	- eljesíti az adott mezőben szereplő szám- és paritási infók által előírt megszorításokat
+	- teljesíti az adott mezőben szereplő szám- és paritási infók által előírt megszorításokat
 	- kulonbozik a sorban levo tobbi elemtol
 	- kulonbozik az oszlopban levo tobbi elemtol
+
+e (even): az adott mező értéke páros,
+o (odd): az adott mező értéke páratlan,
+
+lists:seq(From, To) -> Seq
+
+remove(X, L) ->
+    [Y || Y <- L, Y =/= X].
+
+GAMEPLAN:
+	1. Generalunk egy listat [1..k*k]
+	2. Vegig megyunk a sorokon, list comprehesion szures
+		valami ilyesmivel: remove(X, L) ->
+    					[Y || Y <- L, Y =:= X].
+	3. ua mint a 2. lepes csak oszlopokkal, 
+		kell egy hatekony modszer az adott oszlop elemeinek kiolvasasara
+	4. o es e megszoritasok alapjan megtobb elem eltavolitasa
+
+fasza?
+lehet
+nem tudom
+
 
 --------------Erlang--------------
