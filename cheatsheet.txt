@@ -1,0 +1,51 @@
+--------------Erlang--------------
+-module(khf1).
+-author('email@unit.org.hu').
+-vsn('year-mm-dd').
+-export([feldarabolasa/2]).
+%-compile(export_all).
+
+--------------Cheats--------------
+
+hd() - head
+tl() - tail
+=:=  - ==
+
+% append(L1, L2) az L1 lista L2 elé fűzve.
+append([ ], L2) -> L2;
+append(L1, L2) -> [hd(L1)|append(tl(L1), L2)].
+
+% revapp(L1, L2) az L1 megfordítása L2 elé fűzve.
+revapp([ ], L2) -> L2;
+revapp(L1, L2) -> revapp(tl(L1), [hd(L1)|L2]).
+
+lista konkatenáció m ˝uveleti jele: ++
+
+Füzér =:= string... gec erre nem szamitottam
+
+fnév(A11, ..., A1m) [when ŐrSzekv1] -> SzekvenciálisKif1;
+
+fac(N) -> fac(N, 1).
+fac(0, R) -> R;
+fac(N, R) -> fac(N-1, N*R).
+
+Listanézet (List comprehension): [Kif || Minta <- Lista, Feltétel]
+
+Listák különbsége: As--Bs vagy lists:subtract(As,Bs)
+Listák összef ˝uzése: As++Bs vagy lists:append(As,Bs)
+
+Névtelen függvény (függvényjelölés, lambdajelölés) mint érték
+fun (A11, ..., A1m) [when ŐrSzekv1] -> SzekvenciálisKif1;
+...;
+(An1, ..., Anm) [when ŐrSzekvn] -> SzekvenciálisKifn
+end.
+
+lists:map(Fun, List)
+lists:filter(Pred, List)
+lists:foldr(Fun,Acc,List)
+lists:foldl(Fun,Acc,List)
+    lists:foldr(fun(X, Acc) -> X - Acc end, 0, [1,2,3,4]) ≡ -2
+    lists:foldl(fun(X, Acc) -> X - Acc end, 0, [1,2,3,4]) ≡ 2
+
+
+--------------Erlang--------------
