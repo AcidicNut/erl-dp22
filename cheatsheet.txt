@@ -1,8 +1,8 @@
 --------------Erlang--------------
--module(khf1).
+-module(khf2).
 -author('email@unit.org.hu').
 -vsn('year-mm-dd').
--export([feldarabolasa/2]).
+-export([ertekek/2]).
 %-compile(export_all).
 
 --------------Cheats--------------
@@ -20,6 +20,9 @@ revapp([ ], L2) -> L2;
 revapp(L1, L2) -> revapp(tl(L1), [hd(L1)|L2]).
 
 lista konkatenáció m ˝uveleti jele: ++
+Listák összef ˝uzése: As++Bs vagy lists:append(As,Bs)
+
+Listák különbsége: As--Bs vagy lists:subtract(As,Bs)
 
 Füzér =:= string... gec erre nem szamitottam
 
@@ -31,8 +34,6 @@ fac(N, R) -> fac(N-1, N*R).
 
 Listanézet (List comprehension): [Kif || Minta <- Lista, Feltétel]
 
-Listák különbsége: As--Bs vagy lists:subtract(As,Bs)
-Listák összef ˝uzése: As++Bs vagy lists:append(As,Bs)
 
 Névtelen függvény (függvényjelölés, lambdajelölés) mint érték
 fun (A11, ..., A1m) [when ŐrSzekv1] -> SzekvenciálisKif1;
@@ -47,5 +48,14 @@ lists:foldl(Fun,Acc,List)
     lists:foldr(fun(X, Acc) -> X - Acc end, 0, [1,2,3,4]) ≡ -2
     lists:foldl(fun(X, Acc) -> X - Acc end, 0, [1,2,3,4]) ≡ 2
 
+Bemenet SUDOKU & 1 adott mezo
+Kimenet Adott mezo lehetseges ertekei
+Catch Ez egy FOSUDOKU, szarok a szabalyok
+Szabalyok
+	- k cellameret eseten
+		- az ertekeknek [1, k*k] intervallumban kell lennie
+	- eljesíti az adott mezőben szereplő szám- és paritási infók által előírt megszorításokat
+	- kulonbozik a sorban levo tobbi elemtol
+	- kulonbozik az oszlopban levo tobbi elemtol
 
 --------------Erlang--------------
