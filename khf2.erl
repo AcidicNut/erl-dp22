@@ -38,4 +38,9 @@ kszkSorok(L, K, _M, R, _C, ActRow) when (ActRow > (R div K) * K + K) -> L;
 kszkSorok(L, K, M, R, C, ActRow) when (ActRow =:= R) -> kszkSorok(rRow(L, C, K, lists:nth(ActRow, M)), K, M, R, C, ActRow + 1);
 kszkSorok(L, K, M, R, C, ActRow) -> kszkSorok(sorVizsgalo(L, lists:sublist(lists:nth(ActRow, M), kezdoCol(C, K), K)), K, M, R, C, ActRow +1).
 
-ertekek({K, M}, {R, C}) -> kszkSorok(eredetiCellaPlusz(oszlop(sorVizsgalo(lists:seq(1,K*K), lists:nth(R, M)), M, C), M, R, C), K, M, R, C, kezdoRow(R,K)).
+oOrE(L, ActCell) when (length(ActCell) < 1) -> L;
+oOrE(L, ActCell) when (hd(ActCell) == e) -> oOrE([Y || Y <- L, Y rem 2 =:= 0], tl(ActCell));
+oOrE(L, ActCell) when (hd(ActCell) == o) -> oOrE([Y || Y <- L, Y rem 2 =/= 0], tl(ActCell));
+oOrE(L, ActCell) -> oOrE(L, tl(ActCell)).
+
+ertekek({K, M}, {R, C}) -> oOrE(kszkSorok(eredetiCellaPlusz(oszlop(sorVizsgalo(lists:seq(1,K*K), lists:nth(R, M)), M, C), M, R, C), K, M, R, C, kezdoRow(R,K)), lists:nth(C, lists:nth(R, M))).
