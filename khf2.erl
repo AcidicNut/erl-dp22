@@ -1,8 +1,8 @@
 -module(khf2).
--author('email@unit.org.hu').
--vsn('year-mm-dd').
-%-export([ertekek/2]).
--compile(export_all).
+-author('lorinczb96@gmail.com').
+-vsn('2019-10-15').
+-export([ertekek/2]).
+%-compile(export_all).
 
 % X elem torlese L listabol
 torles(X, L)-> [Y || Y <- L, Y =/= X].
@@ -28,10 +28,9 @@ vegeCol(C, K) -> (C div K) * K + K.
 
 % R,C koordinata nagy cellajanak kezdo es utolso sora
 kezdoRow(R, K) -> (R div K) * K + 1.
-vegeRow(R, K) -> (R div K) * K + K.
 
 % R,C koordinata elemeit itt nem szabad kivenni a lehetosegekbol
-rRow(L, C, K, ActRow) -> sorVizsgalo(sorVizsgalo(L, lists:sublist(ActRow, kezdoCol(C, K), C - kezdoCol(C, K))), lists:sublist(ActRow, C + 1, vegeCol(C,K) - C)).
+rRow(L, C, K, ActRow) -> sorVizsgalo(sorVizsgalo(L, lists:sublist(ActRow, kezdoCol(C, K), C - kezdoCol(C, K) + 1)), lists:sublist(ActRow, C + 1, vegeCol(C,K) - C)).
 
 % Vegig megy R,C koordinata K*K-s cellajan, es filterez
 kszkSorok(L, K, _M, R, _C, ActRow) when (ActRow > (R div K) * K + K) -> L;
@@ -43,4 +42,9 @@ oOrE(L, ActCell) when (hd(ActCell) == e) -> oOrE([Y || Y <- L, Y rem 2 =:= 0], t
 oOrE(L, ActCell) when (hd(ActCell) == o) -> oOrE([Y || Y <- L, Y rem 2 =/= 0], tl(ActCell));
 oOrE(L, ActCell) -> oOrE(L, tl(ActCell)).
 
-ertekek({K, M}, {R, C}) -> oOrE(kszkSorok(eredetiCellaPlusz(oszlop(sorVizsgalo(lists:seq(1,K*K), lists:nth(R, M)), M, C), M, R, C), K, M, R, C, kezdoRow(R,K)), lists:nth(C, lists:nth(R, M))).
+init(L1, L2) when (length(L1) =:= 0) -> L2;
+init(L1, _L2) -> L1.
+
+initList(M, K, R, C) -> init([Y || Y <-lists:nth(C, lists:nth(R, M))] -- [e,o,w,s], lists:seq(1,K*K)).
+
+ertekek({K, M}, {R, C}) -> oOrE(kszkSorok(eredetiCellaPlusz(oszlop(sorVizsgalo(initList(M, K, R, C), lists:nth(R, M)), M, C), M, R, C), K, M, R, C, kezdoRow(R,K)), lists:nth(C, lists:nth(R, M))).
