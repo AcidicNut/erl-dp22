@@ -19,4 +19,4 @@ sorVizsgalo(L, Row) -> sorVizsgalo(elemFilter(L, hd(Row)), tl(Row)).
 oszlop(L, M, _C) when (length(M) < 1) -> L;
 oszlop(L, M, C) -> oszlop(elemFilter(L, lists:nth(C, hd(M))), tl(M), C).
 
-ertekek({K, M}, {R, C}) -> sorVizsgalo(lists:seq(1,K*K), lists:nth(R, M)).
+ertekek({K, M}, {R, C}) -> oszlop(sorVizsgalo(lists:seq(1,K*K), lists:nth(R, M)), M, C).
