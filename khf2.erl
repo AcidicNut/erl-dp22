@@ -4,18 +4,12 @@
 %-export([ertekek/2]).
 -compile(export_all).
 
--type sspec() :: {size(), board()}.
--type size()  :: integer().
--type field() :: [info()].
--type info()  :: e | o | s | w | integer().
--type board() :: [[field()]].
+torles(X, L)-> [Y || Y <- L, Y =/= X].
 
--type ssol() :: [[integer()]].
--type col() :: integer().
--type row() :: integer().
--type coords() :: {row(),col()}.
--spec khf2:ertekek(SSpec :: sspec(), R_C :: coords()) -> Vals :: [integer()].
-%% Egy érték pontosan akkor szerepel a Vals listában, ha teljesíti a
-%% fenti Prolog specifikációban felsorolt (a), (b) és (c) feltételeket, ahol
-%% Vals az SSpec specifikációval megadott Sudoku-feladvány R_C
-%% koordinátájú mezőjében megengedett értékek listája.
+sorElem(L, Elemek) when (length(Elemek) < 1) -> L;
+sorElem(L, Elemek) -> sorElem(torles(hd(Elemek), L), tl(Elemek)).
+
+sorVizsgalo(L, Row) when (length(Row) < 1) -> L;
+sorVizsgalo(L, Row) -> sorVizsgalo(sorElem(L, hd(Row)), tl(Row)).
+
+ertekek({K, M}, {R, C}) -> sorVizsgalo(lists:seq(1,K*K), lists:nth(R, M)).
