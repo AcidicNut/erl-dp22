@@ -21,28 +21,33 @@ oszlop(L, M, _C, _R, _ActR) when (length(M) < 1) -> L;
 oszlop(L, M, C, R, ActR) when (R =:= ActR) -> oszlop(L, tl(M), C, R, ActR + 1);
 oszlop(L, M, C, R, ActR) -> oszlop(elemFilter(L, lists:nth(C, hd(M))), tl(M), C, R, ActR + 1).
 
+%% N. elem torlese a listabol
+toroldN(L, N) ->
+  {Baloldal, Jobboldal} = lists:split(N, L),
+  lists:append(lists:sublist(Baloldal, length(Baloldal)-1),
+  lists:sublist(Jobboldal, length(Jobboldal))).
+
+% R,C cellajat tartalmazo sorok
 sorSub(K, M, R) ->
   I0 = ((R - 1) div K) * K + 1,
   lists:sublist(M, I0, K).
 
-% Ki kellene hagyni az R,C koordinatat, es akkor nem lenne szukseg eredetiCellaPlusz fuggvenyre
-% Jelenleg emiatt elhasal az egyik teszt
-% TODO:: nope. no kedv
-oszlopSub(Sorok, _K, _C, Acc) when (length(Sorok) < 1) -> Acc;
-oszlopSub(Sorok, K, C, Acc) ->
+% sorSub felbontasa, eredmeny Cella elemei egy listaban
+oszlopSub(Sorok, _K, _C, Acc, _ActR, _R) when (length(Sorok) < 1) -> Acc;
+oszlopSub(Sorok, K, C, Acc, ActR, R) ->
   J0 = ((C - 1) div K) * K + 1,
-  oszlopSub(tl(Sorok), K, C, lists:append(Acc, lists:sublist(hd(Sorok), J0, K))).
+  oszlopSub(tl(Sorok), K, C, lists:append(Acc, lists:sublist(hd(Sorok), J0, K)), ActR + 1, R).
 
 % Visszaadja azt a resz matrixok amelyikben R,C koordinata megtalalhato
 subMatrix(K, M, R, C) ->
   Sorok = sorSub(K, M, R),
-  oszlopSub(Sorok, K, C, []).
+  oszlopSub(Sorok, K, C, [], 1, R).
 
 % L listabol eltavolitja a K*K-s cella elemeit
-cella(L, K, M, R, C) -> L -- (lists:append(subMatrix(K, M, R, C))).
-
-% Sorok es oszlopok vizsgalatakor kivesszuk amink volt, ezert most visszaadjuk
-eredetiCellaPlusz(L, M, R, C) -> (L ++ lists:nth(C, lists:nth(R, M))) -- [e,o,w,s].
+cella(L, K, M, R, C) ->
+  I0 = ((R - 1) div K) * K + 1,
+  J0 = ((C - 1) div K) * K + 1,
+  L -- (lists:append(toroldN(subMatrix(K, M, R, C), (R - I0) * K + C - J0 + 1))).
 
 % L listabol torli a paritasnak megfelelo elemeket
 oOrE(L, ActCell) when (length(ActCell) < 1) -> L;
@@ -60,7 +65,6 @@ initList(M, K, R, C) -> init([Y || Y <-lists:nth(C, lists:nth(R, M))] -- [e,o,w,
 ertekek({K, M}, {R, C}) ->
   InitList = initList(M, K, R, C),
   Cella = cella(InitList, K, M, R, C),
-  EredetiCellaPlusz = eredetiCellaPlusz(Cella, M, R, C),
-  SorFiltered = sorVizsgalo(EredetiCellaPlusz, lists:nth(R, M), C, 1),
+  SorFiltered = sorVizsgalo(Cella, lists:nth(R, M), C, 1),
   OszlopFiltered = oszlop(SorFiltered, M, C, R, 1),
   oOrE(OszlopFiltered, lists:nth(C, lists:nth(R, M))).
