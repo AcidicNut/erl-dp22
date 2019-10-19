@@ -25,6 +25,9 @@ sorSub(K, M, R) ->
   I0 = ((R - 1) div K) * K + 1,
   lists:sublist(M, I0, K).
 
+% Ki kellene hagyni az R,C koordinatat, es akkor nem lenne szukseg eredetiCellaPlusz fuggvenyre
+% Jelenleg emiatt elhasal az egyik teszt
+% TODO:: nope. no kedv
 oszlopSub(Sorok, _K, _C, Acc) when (length(Sorok) < 1) -> Acc;
 oszlopSub(Sorok, K, C, Acc) ->
   J0 = ((C - 1) div K) * K + 1,
